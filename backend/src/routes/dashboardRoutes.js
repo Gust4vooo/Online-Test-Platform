@@ -1,7 +1,6 @@
-import express from 'express';
-import dashboardController from '../controllers/dashboardController.js';
-
+const express = require('express');
 const router = express.Router();
+const dashboardController = require('../controllers/dashboardController.js');
 
 // Routes for dashboard services
 router.get('/popular-tests', dashboardController.getPopularTests);
@@ -11,4 +10,4 @@ router.get('/tests-by-category', dashboardController.getTestsByCategory);
 router.get('/popular-tests-by-category', dashboardController.getPopularTestsByCategory);
 router.get('/free-tests-by-category', dashboardController.getFreeTestsByCategory);
 
-export default router;
+module.exports = router;

@@ -1,7 +1,7 @@
-import * as dashboardServices from '../services/dashboardServices.js';
+const dashboardServices = require('../services/dashboardServices.js');
 
 // Get 5 most popular tests
-export const getPopularTests = async (req, res) => {
+const getPopularTests = async (req, res) => {
   try {
     const tests = await dashboardServices.getPopularTests();
     res.status(200).json(tests);
@@ -11,7 +11,7 @@ export const getPopularTests = async (req, res) => {
 };
 
 // Get 5 free tests
-export const getFreeTests = async (req, res) => {
+const getFreeTests = async (req, res) => {
   try {
     const tests = await dashboardServices.getFreeTests();
     res.status(200).json(tests);
@@ -21,7 +21,7 @@ export const getFreeTests = async (req, res) => {
 };
 
 // Search tests by title
-export const searchTestsByTitle = async (req, res) => {
+const searchTestsByTitle = async (req, res) => {
   const { title } = req.query;
   try {
     const tests = await dashboardServices.searchTestsByTitle(title);
@@ -32,7 +32,7 @@ export const searchTestsByTitle = async (req, res) => {
 };
 
 // Get tests by category
-export const getTestsByCategory = async (req, res) => {
+const getTestsByCategory = async (req, res) => {
   const { category } = req.query;
   try {
     const tests = await dashboardServices.getTestsByCategory(category);
@@ -43,7 +43,7 @@ export const getTestsByCategory = async (req, res) => {
 };
 
 // Get 5 most popular tests within a category
-export const getPopularTestsByCategory = async (req, res) => {
+const getPopularTestsByCategory = async (req, res) => {
   const { category } = req.query;
   try {
     const tests = await dashboardServices.getPopularTestsByCategory(category);
@@ -54,7 +54,7 @@ export const getPopularTestsByCategory = async (req, res) => {
 };
 
 // Get 5 free tests within a category
-export const getFreeTestsByCategory = async (req, res) => {
+const getFreeTestsByCategory = async (req, res) => {
   const { category } = req.query;
   try {
     const tests = await dashboardServices.getFreeTestsByCategory(category);
@@ -64,7 +64,7 @@ export const getFreeTestsByCategory = async (req, res) => {
   }
 };
 
-export default {
+module.exports = {
   getPopularTests,
   getFreeTests,
   searchTestsByTitle,
