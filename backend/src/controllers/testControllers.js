@@ -1,21 +1,76 @@
-const { createTestService } = require("backend/src/services/testServices.js");
+const { createTestService, getTestsByCategory, getAllTestsService, publishTestService   } = require("backend/src/services/testServices.js");
 
-const createTest = async (req, res) => {
+// Fungsi untuk menangani permintaan pembuatan tes
+const createTestController = async (req, res, next) => {
+    const { authorId, category, title, testDescription } = req.body;
+
+    // Validasi input
+    if (!authorId || !category || !title || !testDescription) {
+        return res.status(400).json({
+            message: 'Semua field harus diisi.' // Pesan error yang jelas
+        });
+    }
+
     try {
-        const newTest = req.body;
-
-        const test = await createTestService(newTest);
-
-        res.status(201).send({
-            data: test,
-            message: "Create test success",
-        });
+        const newTest = await createTestService({ authorId, category, title, testDescription });
+        res.status(201).json(newTest); // Created
     } catch (error) {
-        res.status(500).send({
-            message: "Failed to create test",
-            error: error.message,
-        });
+        next(error); // Melempar error ke middleware error handling
     }
 };
 
-module.exports = { createTest };
+// Fungsi untuk menangani permintaan publikasi tes
+const publishTestController = async (req, res, next) => {
+    const { testId } = req.params;
+    const { price, similarity, worktime, review } = req.body;
+
+    // Validasi input
+    if (!price || !similarity || !worktime || !review) {
+        const error = new Error('Semua field harus diisi untuk publikasi.');
+        error.status = 400; // Bad Request
+        return next(error);
+    }
+
+    try {
+        const updatedTest = await publishTestService(testId, { price, similarity, worktime, review });
+        res.status(200).json(updatedTest); // OK
+    } catch (error) {
+        next(error);
+    }
+};
+
+const getAllTests = async (req, res) => {
+    try {
+        const tests = await getAllTestsService();
+        res.status(200).json(tests);
+    } catch (error) {
+        console.error('Error fetching tests:', error);
+        res.status(500).json({ message: 'Failed to fetch tests', error: error.message });
+    }
+};
+
+const fetchTestsByCategory = async (req, res, next) => {
+    const { category } = req.params;
+
+    try {
+        const tests = await getTestsByCategory(category);
+        
+        // Jika tidak ada tes ditemukan, lemparkan error
+        if (!tests.length) {
+            const error = new Error('No tests found for this category');
+            error.status = 404;
+            return next(error);
+        }
+
+        res.status(200).json(tests);
+    } catch (error) {
+        next(error); // Arahkan ke middleware penanganan error
+    }
+};
+
+module.exports = { 
+    createTestController,
+    publishTestController,
+    getAllTests,
+    fetchTestsByCategory
+};
