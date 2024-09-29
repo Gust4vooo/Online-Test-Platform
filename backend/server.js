@@ -2,24 +2,28 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+
 import adminRoutes from './src/routes/adminRoutes.js';
 import userRoutes from './src/routes/userRoutes.js';
+import authorRoutes from './src/routes/authorRoutes.js';
+
 import testRoutes from './src/routes/testRoutes.js';
 import multiplechoiceRoutes from './src/routes/multiplechoiceRoutes.js';
 import answerTest from './src/routes/answerTestRoutes.js';
-import authorRoutes from './src/routes/authorRoutes.js';
-import authRoutes from './src/routes/authRoutes.js';
 import dashboardRoutes from './src/routes/dashboardRoutes.js';
 
+dotenv.config();
 const app = express();
+
+// Middleware
+app.use(express.json()); // Parse incoming JSON requests
+app.use(cors()); // Enable CORS for all origins
 
 // Parsing JSON dari request body
 app.use(bodyParser.json()); 
 
 // Parsing URL-encoded data
 app.use(bodyParser.urlencoded({ extended: true }));
-
-dotenv.config();
 
 app.use(express.json());
 app.use(cors({
@@ -36,6 +40,9 @@ app.use("/api/tests", testRoutes);
 app.use("/api/soal", multiplechoiceRoutes);
 app.use("/api", answerTest);
 app.use("/auth", authRoutes);
+app.use("/dashboard", dashboardRoutes);
+
+app.use("/author", authorRoutes);
 app.use("/dashboard", dashboardRoutes);
 
 // Mulai server

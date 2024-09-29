@@ -1,5 +1,5 @@
 // src/services/authorServices.js
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client'; // Ubah require menjadi import
 const prisma = new PrismaClient();
 
 export const createAuthorService = async (authorData) => {

@@ -4,7 +4,7 @@ import {
     editAuthorService, 
     getAuthorService, 
     updateVerificationAuthorService 
-} from "../services/authorServices.js";
+} from '../services/authorServices.js'; // Pastikan menggunakan .js
 
 export const createAuthor = async (req, res) => {
     try {

@@ -45,28 +45,42 @@ const Login = () => {
                 }
             }
     
-            console.log("Login berhasil:", data);
-            localStorage.setItem('token', data.token);
-            
-            // Redirect berdasarkan role
-            if (data.role === 'AUTHOR') {
-                router.push('/author/dashboard'); // Ganti dengan jalur dashboard author
-            } else {
-                router.push('/userDashboard'); // Ganti dengan jalur dashboard user
+            // Cek apakah akun author telah disetujui
+            if (data.isApproved === false) {
+                alert('Akun Anda belum disetujui oleh admin.');
+                return; // Hentikan eksekusi jika belum disetujui
             }
+    
+            console.log("Login berhasil");
+            setShowPopup(true);
+    
+            setTimeout(() => {
+                setShowPopup(false);
+                const role = data.role;
+    
+                // Tambahkan logika untuk mencegah admin login di halaman ini
+                if (role === 'ADMIN') {
+                    alert('Admin tidak dapat login di halaman ini.');
+                    return;
+                }
+    
+                // Adjust routing logic for only AUTHOR and USER
+                if (role === 'AUTHOR') {
+                    router.push('/author/dashboard');
+                } else {
+                    router.push('/user/dashboard');
+                }
+            }, 3000);
         } catch (err) {
             console.error("Kesalahan login", err);
-    
-            // Menampilkan pesan kesalahan sebagai popup
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: err.message, 
-            }).then(() => {
-                
-            });
-    
-            setError(err.message); // Simpan pesan error di state (opsional, jika perlu)
+            // Ganti pesan kesalahan menjadi lebih spesifik
+            if (err.message === 'Pengguna tidak ditemukan') {
+                alert('Pengguna dengan email ini tidak ditemukan.');
+            } else if (err.message === 'Kata sandi tidak valid') {
+                alert('Kata sandi yang Anda masukkan salah.');
+            } else {
+                alert('Tidak dapat melakukan login dengan akun ini.');
+            }
         }
     };
 
