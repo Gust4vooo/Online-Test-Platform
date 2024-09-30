@@ -9,10 +9,11 @@ const createTestService = async (newTest) => {
                 authorId: newTest.authorId,
                 category: newTest.category,
                 title: newTest.title,
-                testDescription: newTest.testDescription
+                testDescription: newTest.testDescription,
             },
         });
     } catch (error) {
+        console.error("Error saat membuat tes:", error);
         throw new Error('Gagal membuat tes');
     }
 };

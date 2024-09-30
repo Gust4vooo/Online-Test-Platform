@@ -5,8 +5,8 @@ import { useEffect, useRef, useState } from 'react';
 export default function BuatSoal() {
   const [jenisTes, setJenisTes] = useState('');
   const [kategoriTes, setKategoriTes] = useState('');
-  const [namaAuthor, setNamaAuthor] = useState('');
-  const [deskripsi, setDeskripsi] = useState('');;
+  const [namaTes, setNamaTes] = useState(''); 
+  const [deskripsi, setDeskripsi] = useState('');
 
   const [showJenisDropdown, setShowJenisDropdown] = useState(false);
   const [showKategoriDropdown, setShowKategoriDropdown] = useState(false);
@@ -29,6 +29,35 @@ export default function BuatSoal() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const newTest = {
+      authorId: 'cm1hcjdaa0001ykiq2ty1f3pw',
+      category: kategoriTes, 
+      title: namaTes, 
+      testDescription: deskripsi
+    };
+
+    try {
+      const response = await fetch('http://localhost:2000/test/tests', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newTest)
+      });
+
+      if (response.ok) {
+        console.log('Tes berhasil disimpan!');
+      } else {
+        console.error('Gagal menyimpan tes.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return (
     <>
@@ -107,34 +136,34 @@ export default function BuatSoal() {
                       </svg>
                     </button>
                     {showJenisDropdown && (
-                    <div className="absolute z-10 w-full mt-1 border border-gray-300 bg-white rounded-md shadow-lg">
-                      <ul className="absolute z-10 w-full mt-1 border border-gray-300 bg-white rounded-md shadow-lg">
-                        <li>
-                          <button
+                      <div className="absolute z-10 w-full mt-1 border border-gray-300 bg-white rounded-md shadow-lg">
+                        <ul className="absolute z-10 w-full mt-1 border border-gray-300 bg-white rounded-md shadow-lg">
+                          <li>
+                            <button
+                              className="font-poppins w-full text-left px-4 py-2 text-gray-700 italic hover:bg-gray-100"
+                              onClick={() => { setJenisTes('Pilihan Ganda'); setShowJenisDropdown(false); }}
+                            >
+                              Pilihan Ganda
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              className="font-poppins w-full text-left px-4 py-2 text-gray-700 italic hover:bg-gray-100"
+                              onClick={() => { setJenisTes('Essay'); setShowJenisDropdown(false); }}
+                            >
+                              Essay
+                            </button>
+                          </li>
+                          <li>
+                            <button
                             className="font-poppins w-full text-left px-4 py-2 text-gray-700 italic hover:bg-gray-100"
-                            onClick={() => { setJenisTes('Pilihan Ganda'); setShowJenisDropdown(false); }}
-                          >
-                            Pilihan Ganda
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="font-poppins w-full text-left px-4 py-2 text-gray-700 italic hover:bg-gray-100"
-                            onClick={() => { setJenisTes('Essay'); setShowJenisDropdown(false); }}
-                          >
-                            Essay
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                          className="font-poppins w-full text-left px-4 py-2 text-gray-700 italic hover:bg-gray-100"
-                          onClick={() => { setJenisTes('Psikotes'); setShowJenisDropdown(false); }}
-                          >
-                            Psikotes
-                          </button>
-                              </li>
-                      </ul>
-                    </div>
+                            onClick={() => { setJenisTes('Psikotes'); setShowJenisDropdown(false); }}
+                            >
+                              Psikotes
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -162,89 +191,76 @@ export default function BuatSoal() {
                       </svg>
                     </button>
                     {showKategoriDropdown && (
-                    <div className="absolute z-10 w-full mt-1 border border-gray-300 bg-white rounded-md shadow-lg">
-                      <ul className="absolute z-10 w-full mt-1 border border-gray-300 bg-white rounded-md shadow-lg">
-                        <li>
-                          <button
-                            className="font-poppins w-full text-left px-4 py-2 text-gray-700 italic hover:bg-gray-100"
-                            onClick={() => { setKategoriTes('CPNS'); setShowKategoriDropdown(false); }}
-                          >
-                            CPNS
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="font-poppins w-full text-left px-4 py-2 text-gray-700 italic hover:bg-gray-100"
-                            onClick={() => { setKategoriTes('UTBK'); setShowKategoriDropdown(false); }}
-                          >
-                            UTBK
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="font-poppins w-full text-left px-4 py-2 text-gray-700 italic hover:bg-gray-100"
-                            onClick={() => { setKategoriTes('Psikotes'); setShowKategoriDropdown(false); }}
-                          >
-                            Psikotes
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="font-poppins w-full text-left px-4 py-2 text-gray-700 italic hover:bg-gray-100"
-                            onClick={() => { setKategoriTes('Pemrograman'); setShowKategoriDropdown(false); }}
-                          >
-                            Pemrograman
-                          </button>
-                        </li>
-                      </ul>
-                    </div>
+                      <div className="absolute z-10 w-full mt-1 border border-gray-300 bg-white rounded-md shadow-lg">
+                        <ul className="absolute z-10 w-full mt-1 border border-gray-300 bg-white rounded-md shadow-lg">
+                          <li>
+                            <button
+                              className="font-poppins w-full text-left px-4 py-2 text-gray-700 italic hover:bg-gray-100"
+                              onClick={() => { setKategoriTes('CPNS'); setShowKategoriDropdown(false); }}
+                            >
+                              CPNS
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              className="font-poppins w-full text-left px-4 py-2 text-gray-700 italic hover:bg-gray-100"
+                              onClick={() => { setKategoriTes('UTBK'); setShowKategoriDropdown(false); }}
+                            >
+                              UTBK
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              className="font-poppins w-full text-left px-4 py-2 text-gray-700 italic hover:bg-gray-100"
+                              onClick={() => { setKategoriTes('PEMROGRAMAN'); setShowKategoriDropdown(false); }}
+                            >
+                              PEMROGRAMAN
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
                     )}
                   </div>
                 </div>
 
-                {/* Input Nama */}
+                {/* Input Nama Tes */}
                 <div className="mb-4">
                   <input
                     type="text"
                     className="w-full border border-gray-300 p-2 rounded-full"
-                    value={namaAuthor}
-                    onChange={(e) => setNamaAuthor(e.target.value)}
+                    placeholder="Nama Tes"
+                    value={namaTes} // Diubah di sini
+                    onChange={(e) => setNamaTes(e.target.value)} 
                   />
                 </div>
 
                 {/* Input Deskripsi */}
                 <div className="mb-4">
                   <textarea
-                    className="w-full border border-gray-300 p-2 rounded-full"
+                    className="w-full border border-gray-300 p-2 rounded-md"
+                    rows="4"
+                    placeholder="Deskripsi"
                     value={deskripsi}
                     onChange={(e) => setDeskripsi(e.target.value)}
                   />
-                  <p className="font-poppins text-black-400 mt-2">Deskripsikan secara singkat menegenai tes soal yang dibuat</p>
                 </div>
 
+                {/* Tombol Simpan */}
+                <div className="relative min-h-[450px]">
+                  <div className="absolute bottom-0 right-0 pb-10 mr-[-20px]">
+                    <button
+                      className="bg-white text-black w-[180px] px-6 py-2 rounded-md hover:bg-[#0B61AA] hover:text-white transition duration-300" 
+                      onClick={handleSubmit}>
+                      Selanjutnya
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-
-            <div className='pt-10 flex justify-end pr-10'>
-            <Link legacyBehavior href="/publikasi">
-              <a className="bg-white text-black py-2 px-4 rounded-lg hover:bg-[#0B61AA] hover:text-white">
-                Selanjutnya
-              </a>
-            </Link>
-          </div>
-
-          </div>
-        )}
-
-        {activeTab === 'publikasi' && (
-          <div className="bg-[#465C6F] p-6 rounded-md">
-            <h2 className="text-white text-xl">Halaman Publikasi</h2>
           </div>
         )}
       </div>
-      </div>
-      
-      
+    </div>
     </>
   );
 }
