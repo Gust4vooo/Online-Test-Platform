@@ -28,7 +28,7 @@ const publishTestService = async (testId, updateData) => {
                 similarity: updateData.similarity,
                 worktime: updateData.worktime,
                 review: updateData.review,
-                isPublished: true // Menandakan tes telah dipublikasikan
+                isPublished: true // 
             },
         });
     } catch (error) {

@@ -1,25 +1,24 @@
 const { createTestService, getTestsByCategory, getAllTestsService, publishTestService   } = require("backend/src/services/testServices.js");
 
-// Fungsi untuk menangani permintaan pembuatan tes
+// Buat tes
 const createTestController = async (req, res, next) => {
     const { authorId, category, title, testDescription } = req.body;
 
-    // Validasi input
     if (!authorId || !category || !title || !testDescription) {
         return res.status(400).json({
-            message: 'Semua field harus diisi.' // Pesan error yang jelas
+            message: 'Semua field harus diisi.' 
         });
     }
 
     try {
         const newTest = await createTestService({ authorId, category, title, testDescription });
-        res.status(201).json(newTest); // Created
+        res.status(201).json(newTest); 
     } catch (error) {
-        next(error); // Melempar error ke middleware error handling
+        next(error); 
     }
 };
 
-// Fungsi untuk menangani permintaan publikasi tes
+// Publish Tes
 const publishTestController = async (req, res, next) => {
     const { testId } = req.params;
     const { price, similarity, worktime, review } = req.body;
@@ -27,13 +26,13 @@ const publishTestController = async (req, res, next) => {
     // Validasi input
     if (!price || !similarity || !worktime || !review) {
         const error = new Error('Semua field harus diisi untuk publikasi.');
-        error.status = 400; // Bad Request
+        error.status = 400; 
         return next(error);
     }
 
     try {
         const updatedTest = await publishTestService(testId, { price, similarity, worktime, review });
-        res.status(200).json(updatedTest); // OK
+        res.status(200).json(updatedTest); 
     } catch (error) {
         next(error);
     }
