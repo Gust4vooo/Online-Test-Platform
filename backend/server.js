@@ -34,28 +34,16 @@ app.use(cors({
     credentials: true                // Jika ingin mengirimkan cookies atau auth credentials
 }));
 
-<<<<<<< HEAD
-// Routes
-app.use("/api/auth", userRoutes);
-app.use("/author", authorRoutes);
-=======
 // Routes auth
 app.use("/auth", authRoutes);
 
 // Routes admin
->>>>>>> e88b080d (be-new-auth)
 app.use("/api/admin", adminRoutes);
 
 // Routes test
 app.use("/api/tests", testRoutes);//diperbaiki lagi penamaan routesnya
 app.use("/api/multiplechoice", multiplechoiceRoutes);
-<<<<<<< HEAD
-app.use("/api", answerTest);
-app.use("/auth", authRoutes);
-app.use("/dashboard", dashboardRoutes);
-=======
 app.use("/api/answer-test", answerTest);
->>>>>>> e88b080d (be-new-auth)
 
 // Routes author
 app.use("/author", authorRoutes);
