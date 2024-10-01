@@ -12,6 +12,7 @@ datasource db {
 model Test {
   id                String        @id @default(cuid())
   authorId         String
+  userId           String
   category         Category
   title            String
   testDescription  String
@@ -22,6 +23,7 @@ model Test {
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
   author           Author        @relation(fields: [authorId], references: [id])
+  user             User          @relation(fields: [userId], references: [id])
   multiplechoice   Multiplechoice[]
   favourite        Favourite[]
   history          History[]
@@ -52,6 +54,7 @@ model User {
   result           Result[]
   testimoni        Testimoni[]
   author           Author[]
+  tests            Test[]
   revokedTokens    RevokedToken[]
 
 }
@@ -109,12 +112,8 @@ model Detail_result {
   optionId         String
   resultId         String
   userAnswer       String
-  status       String   @default("draft") // menambahkan kolom ini untuk menandai status draft atau final
-  result       Result?  @relation(fields: [resultId], references: [id])
+  result           Result       @relation(fields: [resultId], references: [id])
   option           Option       @relation(fields: [optionId], references: [id])
-
-  @@unique([optionId, resultId])
-  
 }
 
 enum OptionLabel {
