@@ -125,7 +125,11 @@
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
+<<<<<<< HEAD
 /******/ 		__webpack_require__.h = () => ("dc7e7bfa76cd6732")
+=======
+/******/ 		__webpack_require__.h = () => ("aa49f68acb2fa559")
+>>>>>>> 340fb87 (add kelola author)
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
