@@ -54,7 +54,6 @@ const fetchTestsByCategory = async (req, res, next) => {
     try {
         const tests = await getTestsByCategory(category);
         
-        // Jika tidak ada tes ditemukan, lemparkan error
         if (!tests.length) {
             const error = new Error('No tests found for this category');
             error.status = 404;
@@ -63,7 +62,7 @@ const fetchTestsByCategory = async (req, res, next) => {
 
         res.status(200).json(tests);
     } catch (error) {
-        next(error); // Arahkan ke middleware penanganan error
+        next(error); 
     }
 };
 
