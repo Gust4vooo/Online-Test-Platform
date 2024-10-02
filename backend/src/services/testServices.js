@@ -6,7 +6,7 @@ const createTestService = async (newTest) => {
     try {
         return await prisma.test.create({
             data: {
-                authorId: newTest.authorId,
+                authorId: "cm1r5tckw0001j7qj60ru9i5f",
                 category: newTest.category,
                 title: newTest.title,
                 testDescription: newTest.testDescription,
@@ -18,20 +18,22 @@ const createTestService = async (newTest) => {
     }
 };
 
-// Fungsi untuk mempublish tes yang sudah dibuat
 const publishTestService = async (testId, updateData) => {
     try {
+        console.log('Updating test with ID:', testId);
+        console.log('Update data:', updateData); // Cek data yang akan diperbarui
+
         return await prisma.test.update({
             where: { id: testId },
             data: {
                 price: updateData.price,
                 similarity: updateData.similarity,
                 worktime: updateData.worktime,
-                review: updateData.review,
-                isPublished: true // 
+                isPublished: true
             },
         });
     } catch (error) {
+        console.error('Error during update:', error); // Cek error yang terjadi
         throw new Error('Gagal mempublish tes');
     }
 };

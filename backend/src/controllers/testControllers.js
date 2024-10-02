@@ -21,17 +21,17 @@ const createTestController = async (req, res, next) => {
 // Publish Tes
 const publishTestController = async (req, res, next) => {
     const { testId } = req.params;
-    const { price, similarity, worktime, review } = req.body;
+    const { price, similarity, worktime } = req.body;
 
     // Validasi input
-    if (!price || !similarity || !worktime || !review) {
+    if (!price || !similarity || !worktime) {
         const error = new Error('Semua field harus diisi untuk publikasi.');
         error.status = 400; 
         return next(error);
     }
 
     try {
-        const updatedTest = await publishTestService(testId, { price, similarity, worktime, review });
+        const updatedTest = await publishTestService(testId, { price, similarity, worktime });
         res.status(200).json(updatedTest); 
     } catch (error) {
         next(error);
