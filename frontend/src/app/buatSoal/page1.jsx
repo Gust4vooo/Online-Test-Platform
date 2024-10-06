@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { useEffect } from 'react';
 import sanitizeHtml from 'sanitize-html';
 import Link from 'next/link';
 
@@ -17,7 +18,7 @@ const MembuatSoal = () => {
   const [labelCount, setlabelCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-
+  
   const addOption = () => {
     setOptions([...options, { optionDescription: '', isCorrect: false }]);
   };
@@ -30,7 +31,7 @@ const MembuatSoal = () => {
 
   const cleanHtml = (html) => {
     return sanitizeHtml(html, {
-      allowedTags: [], // Kosongkan jika tidak ingin ada tag
+      allowedTags: [], 
       allowedAttributes: {},
     });
   };
@@ -41,11 +42,11 @@ const MembuatSoal = () => {
       testId: 'cm1rb82i20002atqkcil4ub2z',
       questions: [
         {
-          question: cleanHtml(question), // Ambil dari input
-          number: parseInt(number), // Pastikan menjadi integer
+          question: cleanHtml(question), 
+          number: parseInt(number), 
           questionPhoto: questionPhoto || "",
-          weight: parseInt(weight), // Pastikan menjadi integer
-          discussion: cleanHtml(discussion), // Ambil dari input
+          weight: parseInt(weight), 
+          discussion: cleanHtml(discussion), 
           options 
         }
       ]
@@ -85,7 +86,7 @@ const MembuatSoal = () => {
   };
 
   return (
-    <div className="container mx-auto p-4" style={{ maxWidth: '1440px' }}>
+    <div className="container mx-auto p-0" style={{ maxWidth: '1440px' }}>
       <header className="bg-[#0B61AA] text-white p-4 sm:p-6 font-poppins" style={{ maxWidth: '1440px', height: '108px' }}>
         <div className="container mx-auto flex justify-start items-center p-0">
           <Link href="/">
@@ -119,29 +120,10 @@ const MembuatSoal = () => {
       </div>
       </header>
 
-      <div className="container mx-auto p-2 sm:p-4 w-full" style={{ maxWidth: '1309px' }}>
+      <div className="container mx-auto lg: p-2 p-4 w-full" style={{ maxWidth: '1309px' }}>
         <header className='bg-[#0B61AA] font-bold font-poppins text-white p-4'>
           <div className="flex items-center justify-between">
             <span>Tes Potensi Skolastik {labelCount}</span>
-            <div className="relative inline-block">
-            <button
-              className="w-14 h-14 text-white  rounded-full flex items-center justify-center cursor-pointer border-none"
-              onClick={() => setDropdownOpen(prev => !prev)}
-            >
-              <span className="text-3xl">:</span> {/* Simbol dua titik */}
-            </button>
-        
-            {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-36 bg-white rounded-lg shadow-lg z-10 p-1">
-                <Link href="/profile-edit">
-                  <a className="block px-4 py-2 text-sm text-gray-700 hover:bg-deepBlue hover:text-white rounded-md">Rename</a>
-                </Link>
-                <Link href="/logout">
-                  <a className="block px-4 py-2 text-sm text-gray-700 hover:bg-deepBlue hover:text-white rounded-md">Delete page</a>
-                </Link>
-              </div>
-            )}
-          </div>
           </div>
         </header>
 
@@ -156,10 +138,27 @@ const MembuatSoal = () => {
                 required
               />
             </div>
-
-            <div className="mb-4">
-              <label className="block mb-2">Soal</label>
-              <ReactQuill value={question} onChange={setQuestion} modules={modules}/>
+            <div className='m'>
+              <div className='border border-black bg-[#D9D9D9] p-2 rounded mb-4' style={{ maxWidth: '1309px', height: '250px' }}>
+                <div className='p-4 flex justify-between items-center mb-0.5 w-full'>
+                  <div className='flex items-center'>
+                    <label className="block mb-2">Soal Pilihan Ganda</label>
+                  </div>
+                  <div className='flex items-center'>
+                    <label className="font-medium-bold mr-2">Bobot</label>
+                    <input
+                      type="number"
+                      value={weight}
+                      onChange={(e) => setWeight(e.target.value)}
+                      className="border p-2 w-full"
+                      required
+                    />
+                  </div>
+                </div>
+                <ReactQuill value={question} onChange={setQuestion} modules={modules}
+                className='bg-white shadow-md rounded-md border border-gray-500'
+                style={{ maxWidth: '1220px', height: '150px', overflow: 'hidden' }}/>
+              </div>
             </div>
 
             <div className="mb-4">
@@ -173,32 +172,17 @@ const MembuatSoal = () => {
               />
             </div>
 
-            <div className="mb-4">
-              <label className="block mb-2">Bobot</label>
-              <input
-                type="number"
-                value={weight}
-                onChange={(e) => setWeight(e.target.value)}
-                className="border p-2 w-full"
-                required
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block mb-2">Diskusi</label>
-              <ReactQuill value={discussion} onChange={setDiscussion} modules={modules} />
-            </div>
-
             <div>
-              <h2 className="text-lg font-bold mb-2">Opsi</h2>
+              <h2 className="text-lg font-semi-bold mb-2">Jawaban</h2>
               {options.map((option, index) => (
                 <div key={index} className="flex items-center space-x-2 mb-2">
                   <input
                     type="text"
                     value={option.optionDescription}
                     onChange={(e) => handleOptionChange(index, 'optionDescription', e.target.value)}
-                    placeholder="Deskripsi Opsi"
-                    className="border p-2 w-full"
+                    placeholder="Tulis jawaban untuk opsi"
+                    className="p-2 w-full"
+                    theme='snow'
                     required
                   />
                   <label>
@@ -211,12 +195,18 @@ const MembuatSoal = () => {
                   </label>
                 </div>
               ))}
-              <button type="button" onClick={addOption} className="mt-2 bg-blue-500 text-white p-2 rounded">
+              <button type="button" onClick={addOption} className="bg-[#7bb3b4] hover:bg-[#8CC7C8] text-black font-bold py-2 px-4 rounded-[15px] border border-black">
                 Tambah Opsi
               </button>
             </div>
 
-            <div className="flex justify-end space-x-2">
+            <div className="mb-4">
+              <label className="block mb-2">Pembahasan</label>
+              <ReactQuill value={discussion} onChange={setDiscussion} modules={modules}
+              placeholder='Tulis kunci jawaban di sini...' />
+            </div>
+
+            <div className='mt-4 flex justify-end space-x-4'>
               <Link href="/hapus" legacyBehavior>
                 <button className="bg-[#E58A7B] border border-black px-4 py-2 hover:text-white font-poppins rounded-[15px]">Hapus</button>
               </Link>
@@ -226,10 +216,10 @@ const MembuatSoal = () => {
                 <button type="submit" className="bg-[#E8F4FF] border border-black px-4 py-2 hover:text-white font-poppins rounded-[15px]">Simpan</button>
               {/* </Link> */}
             </div>
-            </form>
-          </div>
+          </form>
         </div>
       </div>
+    </div>
   );
 };
 
