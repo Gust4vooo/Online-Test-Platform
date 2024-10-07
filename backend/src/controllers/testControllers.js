@@ -3,6 +3,7 @@ const { createTestService, getTestsByCategory, getAllTestsService, publishTestSe
 // Buat tes
 const createTestController = async (req, res, next) => {
     const { authorId, category, title, testDescription } = req.body;
+    console.log("Data yang diterima:", req.body);
 
     if (!authorId || !category || !title || !testDescription) {
         return res.status(400).json({
