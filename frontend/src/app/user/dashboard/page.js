@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import  { useState, useEffect } from 'react';
+// import Detailtest from '@/app/test/detail-tes';
 
 export default function Dashboard() {
   const [popularTests, setPopularTests] = useState([]);
@@ -73,36 +74,6 @@ export default function Dashboard() {
     return <div className="text-center mt-20">Loading...</div>;
   }
 
-  // Logout function
-  const handleLogout = async () => {
-    try {
-      const response = await fetch('http://localhost:2000/auth/logout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Include token if needed
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Logout failed');
-      }
-
-      // Optionally clear the token from local storage
-      localStorage.removeItem('token');
-
-      // Redirect to login page
-      window.location.href = '/auth/login';
-    } catch (error) {
-      console.error('Error during logout:', error);
-      setError(error.message);
-    }
-  };
-
-  if (loading) {
-    return <div className="text-center mt-20">Loading...</div>;
-  }
-
   return (
     <>
       <header className="bg-deepBlue text-white p-6">
@@ -154,14 +125,24 @@ export default function Dashboard() {
                 onMouseLeave={() => setDropdownOpen(false)}
             >
                 <Link legacyBehavior href="/profile-edit">
+<<<<<<< HEAD
                 <a className="block px-4 py-1 text-deepBlue text-sm text-gray-700 hover:bg-deepBlue hover:text-white rounded-md border-abumuda">
+=======
+                <a className="block px-4 py-1 text-deepBlue text-sm hover:bg-deepBlue hover:text-white rounded-md border-abumuda">
+>>>>>>> 69fdcd2f2369f16bf65bfc55a52ec832a8940796
                     Ubah Profil
                 </a>
                 </Link>
                 <Link legacyBehavior href="/auth/login">
+<<<<<<< HEAD
                 <a onClick={handleLogout} className="block px-4 py-1 text-deepBlue text-sm text-gray-700 hover:bg-deepBlue hover:text-white rounded-md">
                     Logout
                   </a>
+=======
+                <a className="block px-4 py-1 text-deepBlue text-sm  hover:bg-deepBlue hover:text-white rounded-md">
+                    Logout
+                </a>
+>>>>>>> 69fdcd2f2369f16bf65bfc55a52ec832a8940796
                 </Link>
             </div>
             )}
@@ -181,7 +162,11 @@ export default function Dashboard() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               />
+<<<<<<< HEAD
                <button 
+=======
+              <button 
+>>>>>>> 69fdcd2f2369f16bf65bfc55a52ec832a8940796
                 type="submit" 
                 className="ml-auto p-2 text-deepBlue font-bold rounded-2xl hover:bg-gray-200 font-poppins">
                 <img 
@@ -237,18 +222,31 @@ export default function Dashboard() {
 
               <div className="flex justify-between space-x-2 leading-relaxed mt-1">
               <div className='flex text-left leading-relaxed space-x-4 '>
+<<<<<<< HEAD
                 <img src={test.author.authorPhoto} alt={test.author.nama} className="h-5 w-5 leading-relaxed " />
                 <span className="text-sm font-semibold leading-relaxed ">{test.author.nama}</span>
               </div>
                 <span className="text-sm font-semibold">
                   {test.price ? <img src="/images/lock.png" alt="Berbayar" className="h-9/2 inline-block" /> : 'Gratis'}
                 </span>
+=======
+                <img src={test.author.authorPhoto} alt={test.author.name} className="h-5 w-5 leading-relaxed " />
+                <span className="text-sm font-semibold leading-relaxed ">{test.author.name}</span>
+              </div>
+              <span className="text-sm font-semibold">
+                {Number(test.price) === 0 ? 'Gratis' : <img src="/images/lock.png" alt="Berbayar" className="h-9/2 inline-block" />}
+              </span>
+>>>>>>> 69fdcd2f2369f16bf65bfc55a52ec832a8940796
               </div>
             </div>
 
             {/* Tombol yang berada di bagian paling bawah */}
             <div className="absolute bottom-5 left-0 right-0 flex justify-center space-x-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30 p-2">
+<<<<<<< HEAD
               <a href="/tes" className="bg-paleBlue text-deepBlue text-bold px-7 py-2 rounded-full inline-block hover:bg-orange hover:text-deepBlue">Mulai</a>
+=======
+              <a href={`/user/mengerjakanKuis/detailsoal/${test.id}`} className="bg-paleBlue text-deepBlue text-bold px-7 py-2 rounded-full inline-block hover:bg-orange hover:text-deepBlue">Mulai</a>
+>>>>>>> 69fdcd2f2369f16bf65bfc55a52ec832a8940796
               <a href="/topScore" className="bg-paleBlue text-deepBlue text-bold px-4 py-2 rounded-full inline-block hover:bg-orange hover:text-deepBlue">Top Score</a>
               </div>
           </div>
@@ -349,8 +347,13 @@ export default function Dashboard() {
 
               <div className="flex justify-between space-x-2 leading-relaxed mt-1">
               <div className='flex text-left leading-relaxed space-x-4 '>
+<<<<<<< HEAD
                 <img src={test.author.authorPhoto} alt={test.author.nama} className="h-5 w-5 leading-relaxed " />
                 <span className="text-sm font-semibold leading-relaxed ">{test.author.nama}</span>
+=======
+                <img src={test.author.authorPhoto} alt={test.author.name} className="h-5 w-5 leading-relaxed " />
+                <span className="text-sm font-semibold leading-relaxed ">{test.author.name}</span>
+>>>>>>> 69fdcd2f2369f16bf65bfc55a52ec832a8940796
               </div>
                 <span className="text-sm font-semibold">
                   {test.price ? <img src="/images/lock.png" alt="Berbayar" className="h-9/2 inline-block" /> : 'Gratis'}
@@ -360,7 +363,11 @@ export default function Dashboard() {
 
             {/* Tombol yang berada di bagian paling bawah */}
             <div className="absolute bottom-5 left-0 right-0 flex justify-center space-x-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30 p-2">
+<<<<<<< HEAD
               <a href="/tes" className="bg-paleBlue text-deepBlue text-bold px-7 py-2 rounded-full inline-block hover:bg-orange hover:text-deepBlue">Mulai</a>
+=======
+              <a href={`/user/mengerjakanKuis/detailsoal/${test.id}`} className="bg-paleBlue text-deepBlue text-bold px-7 py-2 rounded-full inline-block hover:bg-orange hover:text-deepBlue">Mulai</a>
+>>>>>>> 69fdcd2f2369f16bf65bfc55a52ec832a8940796
               <a href="/topScore" className="bg-paleBlue text-deepBlue text-bold px-4 py-2 rounded-full inline-block hover:bg-orange hover:text-deepBlue">Top Score</a>
               </div>
           </div>
@@ -414,8 +421,13 @@ export default function Dashboard() {
   
                 <div className="flex justify-between space-x-2 leading-relaxed mt-1">
                 <div className="flex text-left space-x-4">
+<<<<<<< HEAD
                   <img src={test.author.authorPhoto} alt={test.author.nama} className="h-5 w-5" />
                   <span className="text-sm font-semibold">{test.author}</span>
+=======
+                  <img src={test.author.authorPhoto} alt={test.author.name} className="h-5 w-5" />
+                  <span className="text-sm font-semibold">{test.author.name}</span>
+>>>>>>> 69fdcd2f2369f16bf65bfc55a52ec832a8940796
                 </div>
                   <span className="text-sm font-semibold">
                     {test.price ? <img src="/images/lock.png" alt="Berbayar" className="h-9/2 inline-block" /> : 'Gratis'}
@@ -425,7 +437,11 @@ export default function Dashboard() {
   
               {/* Tombol yang berada di bagian paling bawah */}
               <div className="absolute bottom-5 left-0 right-0 flex justify-center space-x-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30 p-2">
+<<<<<<< HEAD
               <a href="/tes" className="bg-paleBlue text-deepBlue text-bold px-7 py-2 rounded-full inline-block hover:bg-orange hover:text-deepBlue">Mulai</a>
+=======
+              <a href={`/user/mengerjakanKuis/detailsoal/${test.id}`} className="bg-paleBlue text-deepBlue text-bold px-7 py-2 rounded-full inline-block hover:bg-orange hover:text-deepBlue">Mulai</a>
+>>>>>>> 69fdcd2f2369f16bf65bfc55a52ec832a8940796
               <a href="/topScore" className="bg-paleBlue text-deepBlue text-bold px-4 py-2 rounded-full inline-block hover:bg-orange hover:text-deepBlue">Top Score</a>
             </div>
   
@@ -438,4 +454,8 @@ export default function Dashboard() {
     </>
   );
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 69fdcd2f2369f16bf65bfc55a52ec832a8940796

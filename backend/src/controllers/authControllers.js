@@ -97,4 +97,8 @@ export const logout = async (req, res) => {
         console.error('Logout error:', error);
         return res.status(500).json({ message: 'Terjadi kesalahan saat logout. Silakan coba lagi.' });
     }
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> 69fdcd2f2369f16bf65bfc55a52ec832a8940796

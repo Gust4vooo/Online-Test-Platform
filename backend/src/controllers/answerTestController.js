@@ -1,32 +1,43 @@
-import { submitFinalAnswers, saveDraftAnswer, updateDraftAnswer } from '../services/answerTestService.js';
-import jwt from 'jsonwebtoken'; // Pastikan untuk mengimpor jwt
-
+import { submitFinalAnswers, saveDraftAnswer, updateDraftAnswer, getAnswersByResultId} from '../services/answerTestService.js';
 
 export const submitFinal = async (req, res) => {
-    const { testId } = req.params; // Mendapatkan ID tes dari URL parameter
-    const { token } = req.headers; // Mendapatkan token dari header Authorization
+    const { testId } = req.params;
+    const token = req.headers.authorization?.split(" ")[1];
 
     try {
+        // Periksa apakah token diberikan
         if (!token) {
             return res.status(401).json({ message: 'Token tidak diberikan' });
         }
 
-        const result = await submitFinalAnswers(testId, token); // Panggil service untuk submit jawaban final
+        // Panggil fungsi untuk mengirim jawaban final dan menghitung skor
+        const result = await submitFinalAnswers(testId, token);
+        
+        // Jika berhasil, kirim respons dengan status 200
         return res.status(200).json({ message: 'Jawaban final berhasil disimpan', result });
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        // Jika ada error yang dilempar dari fungsi `submitFinalAnswers`, tangani di sini
+        if (error.message.includes('Token tidak valid')) {
+            return res.status(401).json({ message: 'Token tidak valid atau sudah kadaluarsa' });
+        }
+
+        if (error.message.includes('tidak ditemukan')) {
+            return res.status(404).json({ message: error.message });
+        }
+
+        // Untuk kesalahan lain, gunakan status 500 sebagai fallback
+        return res.status(500).json({ message: `Terjadi kesalahan: ${error.message}` });
     }
-}
+};
 
 
 export const saveDraft = async (req, res) => {
-    const token = req.headers.authorization?.split(" ")[1]; // Mengambil token dari header Authorization: Bearer <token>
+    const token = req.headers.authorization?.split(" ")[1];
     
     if (!token) {
         return res.status(401).json({ message: 'Token tidak ditemukan' });
     }
 
-    // Mendapatkan testId dan answers dari body request
     const { testId, answers } = req.body;
 
     if (!testId || !answers || answers.length === 0) {
@@ -34,39 +45,43 @@ export const saveDraft = async (req, res) => {
     }
 
     try {
-        await saveDraftAnswer(testId, token, answers); // Panggil service untuk menyimpan jawaban draft
-        return res.status(200).json({ message: 'Jawaban draft berhasil disimpan' });
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-};
-
-export const updateDraft = async (req, res) => {
-    const token = req.headers.authorization?.split(" ")[1]; // Mengambil token dari header Authorization: Bearer <token>
-    
-    if (!token) {
-        return res.status(401).json({ message: 'Token tidak ditemukan' });
-    }
-
-    // Mendapatkan resultId, optionId, dan newAnswer dari body request
-    const { resultId, optionId, newAnswer } = req.body;
-
-    if (!resultId || !optionId || !newAnswer) {
-        return res.status(400).json({ message: 'Result ID, Option ID, dan jawaban baru harus disertakan' });
-    }
-
-    try {
-        // Memanggil fungsi untuk memperbarui jawaban draft
-        await updateDraftAnswer(resultId, optionId, newAnswer); 
-        
-        // Mengirim response yang berisi pesan sukses dan resultId
+        const resultId = await saveDraftAnswer(testId, token, answers);
         return res.status(200).json({ 
-            message: 'Jawaban draft berhasil diperbarui',
-            resultId: resultId // Kirim kembali resultId dalam respons
+            message: 'Jawaban draft berhasil disimpan',
+            resultId 
         });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
 };
 
+export const updateDraft = async (req, res) => {
+    const { resultId, oldOptionId, newOptionId, newAnswer } = req.body;
 
+    if (!resultId || !oldOptionId || !newOptionId || !newAnswer) {
+        return res.status(400).json({ message: 'Semua field harus diisi.' });
+    }
+
+    try {
+        const updatedId = await updateDraftAnswer(resultId, oldOptionId, newOptionId, newAnswer);
+        return res.status(200).json({
+            message: 'Draft jawaban berhasil diperbarui.',
+            resultId: updatedId,
+        });
+    } catch (error) {
+        console.error('Error updating draft answer:', error);
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+
+export const getAnswersByResultIdController = async (req, res) => {
+    const { resultId } = req.params;
+
+    try {
+        const answers = await getAnswersByResultId(resultId);
+        res.status(200).json(answers);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

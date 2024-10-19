@@ -5,9 +5,8 @@ import bodyParser from 'body-parser';
 
 import adminRoutes from './src/routes/adminRoutes.js';
 import authRoutes from './src/routes/authRoutes.js';
-// import { startCleanupJob } from './src/jobs/schedularToken.js';
 import authorRoutes from './src/routes/authorRoutes.js';
-
+import { startCleanupJob } from './src/jobs/schedularToken.js';
 import testRoutes from './src/routes/testRoutes.js';
 import multiplechoiceRoutes from './src/routes/multiplechoiceRoutes.js';
 import answerTest from './src/routes/answerTestRoutes.js';
@@ -15,10 +14,12 @@ import dashboardRoutes from './src/routes/dashboardRoutes.js';
 import paymentRoutes from './src/routes/paymentRoutes.js';
 import transactionRoutes from './src/routes/transactionRoutes.js'
 // import { orderApi } from './src/routes/orderAPI.js';
+import detailSoal from './src/routes/detailsoalRoutes.js';
+import timerRoutes from './src/routes/timerRoutes.js';
 
 dotenv.config();
 const app = express();
-// startCleanupJob();
+startCleanupJob();
 
 // Middleware
 app.use(express.json()); // Parse incoming JSON requests
@@ -42,24 +43,24 @@ app.use((req, res, next) => {
     next();
 });
 
-// Routes auth
+// app.use("/api/auth", userRoutes);
+app.use("/author", authorRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/tests", testRoutes);
+app.use("/api/soal", multiplechoiceRoutes);
+app.use("/answer", answerTest);
 app.use("/auth", authRoutes);
 
 // Routes admin
-app.use("/api/admin", adminRoutes);
-
-// Routes test
-app.use("/api/tests", testRoutes);//diperbaiki lagi penamaan routesnya
 app.use("/api/multiplechoice", multiplechoiceRoutes);
 app.use("/api/answer-test", answerTest);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/transaction", transactionRoutes);
 
-// Routes author
-app.use("/author", authorRoutes);
-
 // Routes dashboard
 app.use("/dashboard", dashboardRoutes);
+app.use('/tes', detailSoal);
+app.use('/timer', timerRoutes);
 
 // Mulai server
 const PORT = process.env.PORT || 2000;

@@ -1,17 +1,12 @@
 import express from 'express';
-<<<<<<< HEAD
-import { createTest, getTest } from '../controllers/testControllers.js';
-=======
 import { createTest, getTestDetail } from '../controllers/testControllers.js';
->>>>>>> 67c6347a (get data test pada pembayaran)
+import { createTest, getTest, testResultController } from '../controllers/testControllers.js';
 
 const router = express.Router();
 
 router.post('/create-test', createTest);
-<<<<<<< HEAD
 router.get('/get-test/:id', getTest);
-=======
 router.get('/test-detail/:testId', getTestDetail);
->>>>>>> 67c6347a (get data test pada pembayaran)
+router.get('/test-result/:resultId', testResultController);
 
 export default router; // Menggunakan default export

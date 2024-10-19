@@ -1,9 +1,5 @@
 import express from 'express';
-<<<<<<< HEAD
-import { registrasi, login, logout } from '../controllers/authController.js';
-=======
 import { registrasi, login, logout } from '../controllers/authControllers.js';
->>>>>>> e88b080d (be-new-auth)
 
 const router = express.Router();
 
@@ -17,7 +13,11 @@ router.post('/login', login);
 router.post('/logout', logout);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export default router;
 =======
 export default router;
 >>>>>>> e88b080d (be-new-auth)
+=======
+export default router;
+>>>>>>> 69fdcd2f2369f16bf65bfc55a52ec832a8940796
