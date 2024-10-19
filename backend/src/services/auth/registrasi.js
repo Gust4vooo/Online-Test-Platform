@@ -80,8 +80,4 @@ export const createUser = async ({ name, email, password, role }) => {
         console.error('Prisma Error:', prismaError);
         throw new Error('DATABASE_ERROR: ' + prismaError.message);
     }
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> e88b080d (be-new-auth)

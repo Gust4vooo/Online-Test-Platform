@@ -62,8 +62,4 @@ export const loginUser = async ({ email, password }) => {
         console.error('Error logging in:', error);
         throw new Error(error.message); // Pertahankan pesan kesalahan asli
     }
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> e88b080d (be-new-auth)

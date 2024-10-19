@@ -61,8 +61,4 @@ export const cleanupRevokedTokens = async () => {
     } catch (error) {
         console.error('Error cleaning up revoked tokens:', error);
     }
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> e88b080d (be-new-auth)

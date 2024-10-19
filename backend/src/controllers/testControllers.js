@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-import { createTestService } from '../services/testServices.js'; // Pastikan menggunakan ekstensi .js
-import { getTestDetailById } from '../services/testServices.js';
-
-=======
-import { createTestService, getTestService, getTestResult } from '../services/testServices.js'; // Pastikan menggunakan ekstensi .js
->>>>>>> 69fdcd2f2369f16bf65bfc55a52ec832a8940796
+import { createTestService, getTestResult } from '../services/testServices.js'; // Pastikan menggunakan ekstensi .js
 
 const createTest = async (req, res) => {
     try {
@@ -23,8 +17,6 @@ const createTest = async (req, res) => {
         });
     }
 };
-
-export { createTest }; // Menggunakan named export
 
 export const getTestDetail = async (req, res) => {
     const { testId } = req.params;
@@ -45,9 +37,6 @@ export const getTestDetail = async (req, res) => {
         console.error("Error fetching test detail:", error);
         res.status(500).json({ error: 'Internal server error' });
     }
-<<<<<<< HEAD
-};
-=======
 };
 
 const testResultController = async (req, res) => {
@@ -64,7 +53,7 @@ const testResultController = async (req, res) => {
   
   
 
-export { createTest , getTest, testResultController}; // Menggunakan named export
+export { createTest , testResultController}; // Menggunakan named export
 
 
 
@@ -89,4 +78,3 @@ export { createTest , getTest, testResultController}; // Menggunakan named expor
 // };
 
 // module.exports = { createTest };
->>>>>>> 69fdcd2f2369f16bf65bfc55a52ec832a8940796
