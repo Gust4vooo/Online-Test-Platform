@@ -11,23 +11,26 @@ datasource db {
 
 model Test {
   id                String        @id @default(cuid())
-  authorId         String
-  userId           String
-  category         Category
-  title            String
-  testDescription  String
-  price            Decimal
-  similarity       Decimal
-  worktime         Int
-  review           String
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-  author           Author        @relation(fields: [authorId], references: [id])
-  user             User          @relation(fields: [userId], references: [id])
-  multiplechoice   Multiplechoice[]
-  favourite        Favourite[]
-  history          History[]
-  result           Result[]
+  authorId          String
+  userId            String
+  category          Category
+  title             String
+  testDescription   String
+  price             Decimal
+  similarity        Decimal
+  worktime          Int
+  review            String
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  author            Author        @relation(fields: [authorId], references: [id])
+  user              User          @relation(fields: [userId], references: [id])
+  multiplechoice    Multiplechoice[]
+  favourite         Favourite[]
+  history           History[]
+  result            Result[]
+
+  // Relasi ke tabel Transaction
+  transactions      Transaction[]
 }
 
 model History {
@@ -48,16 +51,18 @@ model User {
   userPhoto         String?         @default("")
   adsBalance        Decimal         @default(0)
   isApproved        Boolean         @default(true)
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
-  favourite        Favourite[]
-  history          History[]
-  result           Result[]
-  testimoni        Testimoni[]
-  author           Author[]
-  tests            Test[]
-  revokedTokens    RevokedToken[]
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  favourite         Favourite[]
+  history           History[]
+  result            Result[]
+  testimoni         Testimoni[]
+  author            Author[]
+  tests             Test[]
+  revokedTokens     RevokedToken[]
 
+  // Relasi ke tabel Transaction
+  transactions      Transaction[]
 }
 
 model Author {
@@ -139,12 +144,21 @@ model Option {
 
 model Transaction {
   id                String       @id @default(cuid())
-  testId           String
-  paymentMethod    String
-  paymentTime      DateTime
-  price            Int
-  total            Int
-  status           String
+  testId            String
+  userId            String
+  paymentMethod     String
+  paymentTime       DateTime
+  price             Int
+  total             Int
+  status         TransactionStatus @default(PENDING)
+  test              Test         @relation(fields: [testId], references: [id])
+  user              User         @relation(fields: [userId], references: [id])
+}
+
+enum TransactionStatus {
+  PENDING
+  SUCCESS
+  FAILED
 }
 
 model Testimoni {

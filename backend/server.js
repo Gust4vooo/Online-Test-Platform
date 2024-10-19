@@ -13,6 +13,8 @@ import multiplechoiceRoutes from './src/routes/multiplechoiceRoutes.js';
 import answerTest from './src/routes/answerTestRoutes.js';
 import dashboardRoutes from './src/routes/dashboardRoutes.js';
 import paymentRoutes from './src/routes/paymentRoutes.js';
+import transactionRoutes from './src/routes/transactionRoutes.js'
+// import { orderApi } from './src/routes/orderAPI.js';
 
 dotenv.config();
 const app = express();
@@ -31,9 +33,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors({
     origin: 'http://localhost:3000', // Mengizinkan request dari frontend di port 3000
-    methods: ['GET', 'POST', 'PATCH', 'PUT'],        // Metode HTTP yang diizinkan
+    methods: ['GET', 'POST', 'DELETE'],        // Metode HTTP yang diizinkan
     credentials: true                // Jika ingin mengirimkan cookies atau auth credentials
 }));
+
+app.use((req, res, next) => {
+    res.setHeader('ngrok-skip-browser-warning', 'true');
+    next();
+});
 
 // Routes auth
 app.use("/auth", authRoutes);
@@ -46,7 +53,7 @@ app.use("/api/tests", testRoutes);//diperbaiki lagi penamaan routesnya
 app.use("/api/multiplechoice", multiplechoiceRoutes);
 app.use("/api/answer-test", answerTest);
 app.use("/api/payment", paymentRoutes);
-
+app.use("/api/transaction", transactionRoutes);
 
 // Routes author
 app.use("/author", authorRoutes);
