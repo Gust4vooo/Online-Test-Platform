@@ -44,6 +44,25 @@ function App() {
       fetchTestDetail(); // Memanggil API ketika testId ada
   }, [testId]);
 
+  useEffect(() => {
+    const checkPaymentStatus = async () => {
+      const response = await fetch('/api/payment/status', {
+        method: 'POST',
+        body: JSON.stringify({ userId, testId }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+        
+      const result = await response.json();
+        
+      if (result.isPaid) {
+        setAccessGranted(true);
+      } else {
+          setAccessGranted(false);
+      }
+    };
+    checkPaymentStatus();
+  }, []);
+
   const handlePayment = async () => {
     if (testId) {
       try {

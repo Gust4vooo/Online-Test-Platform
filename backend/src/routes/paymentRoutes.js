@@ -64,6 +64,50 @@ router.post("/payment-process", async (req, res) => {
     }
 });
 
+// Route untuk menerima notifikasi webhook dari Midtrans
+router.post("/webhook", async (req, res) => {
+    try {
+        const notification = req.body;
+        const orderId = notification.order_id;
+        const transactionStatus = notification.transaction_status;
+        const paymentTime = notification.transaction_time;
+        
+        // Periksa status transaksi dari webhook
+        if (transactionStatus === 'settlement') {
+            // Pembayaran berhasil
+            await prisma.transaction.update({
+                where: { orderId: orderId },
+                data: { 
+                    isPaid: true, 
+                    status: 'settlement',
+                    paymentTime: new Date(paymentTime),  // Simpan waktu pembayaran dari webhook
+                }
+            });
+        } else if (transactionStatus === 'pending') {
+            await prisma.transaction.update({
+                where: { orderId: orderId },
+                data: { status: 'pending' }
+            });
+            // Pembayaran masih pending
+            console.log('Pembayaran masih pending');
+        } else if (transactionStatus === 'cancel') {
+            await prisma.transaction.update({
+                where: { orderId: orderId },
+                data: { status: 'cancel' }
+            });
+            // Pembayaran dibatalkan
+            console.log('Pembayaran dibatalkan');
+        }
+
+        // Kirim response 200 untuk memberi tahu Midtrans bahwa notifikasi diterima
+        res.status(200).json({ message: 'Notifikasi diterima' });
+
+    } catch (error) {
+        console.error('Error dalam webhook:', error);
+        res.status(500).json({ error: 'Error memproses webhook' });
+    }
+});
+
 router.get("/status/:orderId", async (req, res) => {
     try {
         const snap = new midtransClient.Snap({

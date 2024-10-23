@@ -123,11 +123,7 @@ model Detail_result {
   status       String   @default("draft") // menambahkan kolom ini untuk menandai status draft atau final
   result           Result?       @relation(fields: [resultId], references: [id])
   option           Option       @relation(fields: [optionId], references: [id])
-<<<<<<< HEAD
-=======
-
   @@unique([optionId, resultId])
->>>>>>> 69fdcd2f2369f16bf65bfc55a52ec832a8940796
 }
 
 enum OptionLabel {
@@ -149,44 +145,25 @@ model Option {
   detail_result     Detail_result[]
 }
 
-<<<<<<< HEAD
 model Transaction {
   id                String       @id @default(cuid())
   testId            String
   userId            String
   paymentMethod     String
-  paymentTime       DateTime
+  paymentTime       DateTime?
   price             Int
   total             Int
-  status         TransactionStatus @default(PENDING)
+  status         TransactionStatus @default(Pending)
+  isPaid          Boolean          @default(false)
   test              Test         @relation(fields: [testId], references: [id])
   user              User         @relation(fields: [userId], references: [id])
 }
 
 enum TransactionStatus {
-  PENDING
-  SUCCESS
-  FAILED
-=======
-// Enum untuk status transaksi
-enum TransactionStatus {
-  unpaid
-  pending
-  success
->>>>>>> 69fdcd2f2369f16bf65bfc55a52ec832a8940796
+  Expired
+  Pending
+  Settlement
 }
-
-// Model Transaksi
-model Transaction {
-  id             String            @id @default(cuid())
-  testId         String
-  paymentMethod  String
-  paymentTime    DateTime          @default(now())
-  total          Int
-  status         TransactionStatus
-  test           Test              @relation(fields: [testId], references: [id])
-}
-
 
 model Testimoni {
   id                String       @id @default(cuid())

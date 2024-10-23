@@ -2,17 +2,17 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// Create a new transaction
 const createTransactionService = async (newTransaction) => {
     return await prisma.transaction.create({
         data: {
             testId: newTransaction.testId,
             userId: newTransaction.userId,
             paymentMethod: newTransaction.paymentMethod,
-            paymentTime: newTransaction.paymentTime,
             price: newTransaction.price,
             total: newTransaction.total,
-            status: newTransaction.status,
+            status: 'pending',
+            paymentTime: null,
+            isPaid: false
         },
         include: {
             test: true,   // Menyertakan data test
